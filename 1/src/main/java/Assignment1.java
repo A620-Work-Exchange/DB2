@@ -108,25 +108,153 @@ public class Assignment1 {
     private void solution1() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT a.pid FROM " +
-                    "(SELECT sum(volume), pid FROM Deal GROUP BY pid ORDER " +
-                    "BY sum(volume) DESC )a limit 2");
+            ResultSet resultSet = statement.executeQuery("select pname, sum(volume) from Production,  Deal\n" +
+                    "where pid and volume in (\n" +
+                    "\tselect pid, sum(volume) from(\n" +
+                    "\t\tselect pid, sum(volume) from Deal\n" +
+                    "        group by pid\n" +
+                    "        order by sum(volume) desc\n" +
+                    "    ) limit 2\n" +
+                    ");");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
-                printOneColumn(resultSet, "pid: " + resultSet.getString(1) + " " +
-                        "sum: " + resultSet.getString(2));
+                printOneColumn(resultSet, "pname: " + resultSet.getString(1) + " " +
+                        "volume: " + resultSet.getString(2));
             }
         }catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+    private void solution2() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select pname, volume from Production p, Deal d \n" +
+                    "where p.pid = d.pid and p.pdate >= str_to_date('2017-1-1', 'yyyy-mm-dd');");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "pname: " + resultSet.getString(1) + " " +
+                        "volume: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void solution3() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select sname, aname from Sales s, Agent a\n" +
+                    "where s.aid = a.aid and s.sid in (\n" +
+                    "\tselect sid from Deal d where d.pid = 2\n" +
+                    "    and d.volume > 100\n" +
+                    ");");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void solution4() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select sname, aname from Sales s, Agent a\n" +
+                    "where s.aid = a.aid and s.sid in (\n" +
+                    "\tselect sid from Deal d where d.pid = 2\n" +
+                    "    and d.volume > 100\n" +
+                    ");");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void solution5() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select pname, count(*) from Production ,Deal"+
+                    " group by pid;");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void solution6() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select aname, sname from Agent a, Sales s \n" +
+                    "where a.aid = s.aid and a.aid = (\n" +
+                    "\tselect aid from Agent where aname like '%BBB%'\n" +
+                    ");");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void solution7() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select pname, sum(volume) from Production p, Deal d group by p.pid\n" +
+                    "having sum(volume) = (select min(volume) from\n" +
+                    "\tDeal group by pid\n" +
+                    ");");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void solution8() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select sname, aname from Sales s, Agent a\n" +
+                    "where s.aid = a.aid and s.sid in (\n" +
+                    "\tselect sid from Deal d where d.pid = 2\n" +
+                    "    and d.volume > 100\n" +
+                    ");");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "sname: " + resultSet.getString(1) + " " +
+                        "aname: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
         Assignment1 assignment1 = new Assignment1();
         assignment1.init();
-//        assignment1.loadOrdersData();
+//        assignment1.loadOrdersData);
 //        assignment1.loadProductsData();
+//        assignment1.solution1();
+//        assignment1.solution2();
+//        assignment1.solution3();
+//        assignment1.solution6();
         assignment1.solution1();
 
     }
