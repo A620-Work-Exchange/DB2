@@ -105,11 +105,29 @@ public class Assignment1 {
         }
     }
 
+    private void solution1() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT a.pid FROM " +
+                    "(SELECT sum(volume), pid FROM Deal GROUP BY pid ORDER " +
+                    "BY sum(volume) DESC )a limit 2");
+            if(!resultSet.next()) {
+                System.out.println("查询结果为空");
+            }else {
+                printOneColumn(resultSet, "pid: " + resultSet.getString(1) + " " +
+                        "sum: " + resultSet.getString(2));
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         Assignment1 assignment1 = new Assignment1();
         assignment1.init();
-        assignment1.loadOrdersData();
-        assignment1.loadProductsData();
+//        assignment1.loadOrdersData();
+//        assignment1.loadProductsData();
+        assignment1.solution1();
 
     }
 
