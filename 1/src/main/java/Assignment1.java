@@ -108,14 +108,10 @@ public class Assignment1 {
     private void solution1() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select pname, sum(volume) from Production,  Deal\n" +
-                    "where pid and volume in (\n" +
-                    "\tselect pid, sum(volume) from(\n" +
-                    "\t\tselect pid, sum(volume) from Deal\n" +
-                    "        group by pid\n" +
-                    "        order by sum(volume) desc\n" +
-                    "    ) limit 2\n" +
-                    ");");
+            ResultSet resultSet = statement.executeQuery("select pname, volume from Production, Deal\n" +
+                    "where Production.pid = Deal.pid \n" +
+                    "order by volume desc\n" +
+                    "limit 2");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -164,11 +160,11 @@ public class Assignment1 {
     private void solution4() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select sname, aname from Sales s, Agent a\n" +
-                    "where s.aid = a.aid and s.sid in (\n" +
-                    "\tselect sid from Deal d where d.pid = 2\n" +
-                    "    and d.volume > 100\n" +
-                    ");");
+            ResultSet resultSet = statement.executeQuery("select aname, pname, volume from (\n" +
+                    "\tselect Agent.aname, Production.pname, Deal.pid, Sales.sid\n" +
+                    "    from Agent, Production, Deal, Sales\n" +
+                    "    where Agent.aid = Sales.aid and Production.pid = Deal.pid and \n" +
+                    "    Sales.sid = Deal.sid) group by aname;");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -182,8 +178,10 @@ public class Assignment1 {
     private void solution5() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select pname, count(*) from Production ,Deal"+
-                    " group by pid;");
+            ResultSet resultSet = statement.executeQuery("select pname, count(*) from Production p, Deal d\n" +
+                    "where p.pid = d.pid and p.pid in (select pid, count(*) from \n" +
+                    "\tDeal group by pid\n" +
+                    ");");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -214,10 +212,11 @@ public class Assignment1 {
     private void solution7() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select pname, sum(volume) from Production p, Deal d group by p.pid\n" +
-                    "having sum(volume) = (select min(volume) from\n" +
-                    "\tDeal group by pid\n" +
-                    ");");
+            ResultSet resultSet = statement.executeQuery("select pname, volume from Production, Deal\n" +
+                    "where Production.pid = Deal.pid \n" +
+                    "order by volume asc\n" +
+                    "limit 1" +
+                    ";");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -255,7 +254,7 @@ public class Assignment1 {
 //        assignment1.solution2();
 //        assignment1.solution3();
 //        assignment1.solution6();
-        assignment1.solution1();
+        assignment1.solution4();
 
     }
 

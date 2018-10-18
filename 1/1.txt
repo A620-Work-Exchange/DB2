@@ -1,10 +1,16 @@
 # 1
+select pname, volume from Production, Deal
+where Production.pid = Deal.pid 
+order by volume desc
+limit 2
 
 
 
 # 2
 select pname, volume from Production p, Deal d 
 where p.pid = d.pid and p.pdate >= str_to_date('2017-1-1', 'yyyy-mm-dd');
+
+
 
 
 # 3
@@ -14,11 +20,18 @@ where s.aid = a.aid and s.sid in (
     and d.volume > 100
 );
 
+
+
+
 # 4
 
  
 # 5
 
+select pname, count(pid) from Production p, Deal d
+where p.pid = d.pid and p.pid in (select pid, count(pid) from 
+	Deal group by pid
+);
 
 # 6
 select aname, sname from Agent a, Sales s 
@@ -27,3 +40,10 @@ where a.aid = s.aid and a.aid = (
 );
 
 # 7
+
+select pname, volume from Production, Deal
+where Production.pid = Deal.pid 
+order by volume asc
+limit 1
+
+# 8
