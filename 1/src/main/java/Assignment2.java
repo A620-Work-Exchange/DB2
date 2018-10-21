@@ -34,20 +34,29 @@ public class Assignment2 {
         try {
             Statement statement = connection.createStatement();
             start = System.currentTimeMillis();
-            ResultSet resultSet = statement.executeQuery("select * from orders o where o.age < 20");
+            statement.executeQuery("select * from orders o where o.age < 20");
             end = System.currentTimeMillis();
             System.out.println("Solution 1 costs " + (end - start) + " milliseconds");
-            System.out.println("Solution 1 find " + getResNumber(resultSet) + " results...");
-         //   printOneColumn(resultSet, "S1");
+            statement.execute("CREATE INDEX age_index ON orders (age)");
+            System.out.println("Succeed to create index on age...");
+            start = System.currentTimeMillis();
+            statement.executeQuery("select * from orders o where o.age < 20");
+            end = System.currentTimeMillis();
+            System.out.println("Solution 1+ costs " + (end - start) + " milliseconds");
+
+
+
         }catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+
+
     public static void main(String[] args) {
         Assignment2 assignment2 = new Assignment2();
         assignment2.init();
-        assignment2.solution1();
+       // assignment2.solution1();
     }
 
     private long getResNumber(ResultSet resultSet) {
