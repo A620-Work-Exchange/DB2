@@ -1,60 +1,56 @@
-# 1
-select pname, volume from Production, Deal
-where Production.pid = Deal.pid 
-order by volume desc
-limit 2
+# 1. 查询销售量最高的产品的前两名（pname，volume）
+select P.pname, S.v as volume 
+from Production P, (select pid, sum(cast(volume as integer)) as v from Deal group by pid order by cast(v as integer) DESC limit 2) S 
 
 
+# 2. 查询2017年生产的产品的总销量（pname，volume）
+select P.pname, S.v as volume 
+from Production P, 
+(select D.pid, sum(cast(D.volume as integer)) as v 
+from Deal D group by D.pid) S 
+where S.pid = P.pid and year(P.pdate) == 2017;
 
-# 2
-select pname, volume from Production p, Deal d 
-where p.pid = d.pid and p.pdate >= str_to_date('2017-1-1', 'yyyy-mm-dd');
 
-
-
-
-# 3
+# 3 查询产品编号为2且销售量超过100的销售人员的姓名及所在的公司（sname，aname）
+select S.sname, A.aname 
 select sname, aname from Sales s, Agent a
 where s.aid = a.aid and s.sid in (
-	select sid from Deal d where d.pid = 2
-    and d.volume > 100
+	select sid from Deal d where d.pid = '2'
+    group by sid having sum(cast(volume as integer))>100
 );
 
 
-
-
-# 4
-select aname, pname, volume 
-from Agent a, Production p, Deal d, Sales s
-where d.pid =  p.pid and d.sid = s.sid and a.aid = s.aid
+# 4 查询所有代理商所有产品的销量（aname，pname，volume）
+select A.aname, P.pname, S1.v as volume 
+from Agent A, Production P, 
+(select sid, pid, sum(cast(volume as integer)) as v from Deal
+ group by sid, pid) S
 
  
-# 5
+# 5 查询每个产品有多少个销售人员在销售（pname，scount（计数）
 
-select pname, count(pid) from Production p, Deal d
-where p.pid = d.pid and p.pid in (select pid, count(pid) from 
-	Deal group by pid
-);
+select P.pname, S.count as scount 
+from Production P, (select pid, count(distinct sid) 
+as count from Deal group by pid) S 
+where S.pid = p.pid;
 
-# 6
+# 6 查询名称包含BBB的代理商中的所有销售人员（aname，sname）
 select aname, sname from Agent a, Sales s 
 where a.aid = s.aid and a.aid = (
 	select aid from Agent where aname like '%BBB%'
 );
 
-# 7
+# 7 查询总销量最差的产品（pname，volume）
 
-select pname, volume from Production, Deal
-where Production.pid = Deal.pid 
-order by volume asc
-limit 1
+select P.pname, sum(cast(D.volume as integer)) as volume 
+from Production P, Deal D 
+where P.pid = D.pid and volume <= ALL(select sum(cast(volume as integer)) from Deal group by pid );
 
-# 8
-select pname, sname, volumn
-  from Production, Sales, Deal
- where sid in
-       (select Sales.sid
-          from Deal t1, (select pid, max(volume)a from Deal group by pid) t2
-         where t1.pid = t2.pid
-           and t1.volume = t2.a)
-           and Production.pid = Deal.pid and Deal.sid = Sales.sid;
+# 8 查询每种产品销售总量最高的销售人员（pname，sname，volumn）
+select P.pname, S.sname, S1.v as volumn 
+from Production P, Sales S, 
+(select pid, sid, sum(cast(volume as integer)) 
+as v from Deal group by pid, sid) S1 
+where P.pid = S1.pid and S.sid = S1.sid and
+S1.v >= ALL(select sum(cast(volume as integer))
+from Deal where pid = P.pid group by sid);

@@ -37,7 +37,7 @@ public class Assignment2 {
             statement.executeQuery("select * from orders o where o.age < 20");
             end = System.currentTimeMillis();
             System.out.println("Solution 1 costs " + (end - start) + " milliseconds");
-            statement.execute("CREATE INDEX age_index ON orders (age)");
+            statement.execute("alter table `orders` add index age_index7(`age`)");
             System.out.println("Succeed to create index on age...");
             start = System.currentTimeMillis();
             statement.executeQuery("select * from orders o where o.age < 20");
@@ -56,7 +56,7 @@ public class Assignment2 {
     public static void main(String[] args) {
         Assignment2 assignment2 = new Assignment2();
         assignment2.init();
-       // assignment2.solution1();
+        assignment2.solution1();
     }
 
     private long getResNumber(ResultSet resultSet) {
