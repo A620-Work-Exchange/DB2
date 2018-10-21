@@ -13,14 +13,32 @@ public class Assignment2 {
 
     long start = 0, end = 0;
 
+    private final String S1 = "select * from orders where age < 20";
+
+    private final String S2 = "select * from orders where name like '王%'";
+
+    private final String S3 = "select count(*) from orders where sex = '男' ";
+
+    private final String S3P = "create index sex_index on orders(sex)";
+
+    private final String S4 = "select count(*) from orders where sex = '女' and name like '张%' and age > 50 and amount < 100;";
+
+    private final String S4P = "create index orders_index on orders(name, amount, age, sex);";
+
+    private final String S5 = "select count(*) from orders where name like '___' ";
+
+    private final String S5P = "create index name_three_index on orders(name)";
+
+    private final String S6 = "select * from products where nums>150";
+    
+    private final String S6P = "create index nums_index on products(nums)";
+
     private void init() {
         try{
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USER, PW);
             if(!connection.isClosed()) {
                 System.out.println("Succeed to connect...");
-
-
             }else{
                 System.out.println("Fail to connect...");
             }
@@ -34,18 +52,33 @@ public class Assignment2 {
         try {
             Statement statement = connection.createStatement();
             start = System.currentTimeMillis();
-            statement.executeQuery("select * from orders o where o.age < 20");
+            statement.executeQuery(S1);
             end = System.currentTimeMillis();
-            System.out.println("Solution 1 costs " + (end - start) + " milliseconds");
-            statement.execute("alter table `orders` add index age_index7(`age`)");
+            printTime(1, false);
+            statement.execute("CREATE index age0 on orders(age)");
             System.out.println("Succeed to create index on age...");
             start = System.currentTimeMillis();
-            statement.executeQuery("select * from orders o where o.age < 20");
+            statement.executeQuery(S1);
             end = System.currentTimeMillis();
-            System.out.println("Solution 1+ costs " + (end - start) + " milliseconds");
+            printTime(1, true);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-
-
+    private void solution2() {
+        try {
+            Statement statement = connection.createStatement();
+            start = System.currentTimeMillis();
+            statement.executeQuery(S2);
+            end = System.currentTimeMillis();
+            printTime(2, false);
+            statement.execute("CREATE index name2 on orders(name)");
+            System.out.println("Succeed to create index on age...");
+            start = System.currentTimeMillis();
+            statement.executeQuery(S2);
+            end = System.currentTimeMillis();
+            printTime(2, true);
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -56,7 +89,9 @@ public class Assignment2 {
     public static void main(String[] args) {
         Assignment2 assignment2 = new Assignment2();
         assignment2.init();
-        assignment2.solution1();
+      //  assignment2.solution1();
+         assignment2.dropIndex2();
+         assignment2.solution2();
     }
 
     private long getResNumber(ResultSet resultSet) {
@@ -71,5 +106,30 @@ public class Assignment2 {
         }
         return 0;
     }
+
+    private void printTime(int i, boolean isPolished) {
+        String str = "";
+        if(isPolished) {
+            str = "+";
+        }
+        System.out.println("Solution" + str + i + " costs " + (end - start) + " milliseconds");
+    }
+
+    private void dropIndex(String index_name, String table_name) {
+        String str = "DROP INDEX " + index_name + " ON " + table_name;
+        String str1 = "SHOW INDEX FROM `orders`";
+        try {
+            Statement statement = connection.createStatement();
+            boolean resultSet = statement.execute(str1);
+            System.out.println();
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void dropIndex2() {
+        dropIndex("", "orders");
+    }
+
 
 }
