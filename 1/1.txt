@@ -24,6 +24,9 @@ where s.aid = a.aid and s.sid in (
 
 
 # 4
+select aname, pname, volume 
+from Agent a, Production p, Deal d, Sales s
+where d.pid =  p.pid and d.sid = s.sid and a.aid = s.aid
 
  
 # 5
@@ -47,3 +50,11 @@ order by volume asc
 limit 1
 
 # 8
+select pname, sname, volumn
+  from Production, Sales, Deal
+ where sid in
+       (select Sales.sid
+          from Deal t1, (select pid, max(volume)a from Deal group by pid) t2
+         where t1.pid = t2.pid
+           and t1.volume = t2.a)
+           and Production.pid = Deal.pid and Deal.sid = Sales.sid;

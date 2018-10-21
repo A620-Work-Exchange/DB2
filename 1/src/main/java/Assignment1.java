@@ -160,11 +160,10 @@ public class Assignment1 {
     private void solution4() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select aname, pname, volume from (\n" +
-                    "\tselect Agent.aname, Production.pname, Deal.pid, Sales.sid\n" +
-                    "    from Agent, Production, Deal, Sales\n" +
-                    "    where Agent.aid = Sales.aid and Production.pid = Deal.pid and \n" +
-                    "    Sales.sid = Deal.sid) group by aname;");
+            ResultSet resultSet = statement.executeQuery("select aname, pname, volume \n" +
+                    "from Agent a, Production p, Deal d, Sales s\n" +
+                    "where d.pid =  p.pid and d.sid = s.sid and a.aid = s.aid\n" +
+                    "");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -230,11 +229,14 @@ public class Assignment1 {
     private void solution8() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select sname, aname from Sales s, Agent a\n" +
-                    "where s.aid = a.aid and s.sid in (\n" +
-                    "\tselect sid from Deal d where d.pid = 2\n" +
-                    "    and d.volume > 100\n" +
-                    ");");
+            ResultSet resultSet = statement.executeQuery("select pname, sname, volume\n" +
+                    "  from Production, Sales, Deal\n" +
+                    " where Sales.sid in\n" +
+                    "       (select sid\n" +
+                    "          from Deal t1, (select pid, max(volume)a from Deal group by pid) t2\n" +
+                    "         where t1.pid = t2.pid\n" +
+                    "           and t1.volume = t2.a)\n" +
+                    "           and Production.pid = Deal.pid and Deal.sid = Sales.sid;");
             if(!resultSet.next()) {
                 System.out.println("查询结果为空");
             }else {
@@ -245,6 +247,8 @@ public class Assignment1 {
             ex.printStackTrace();
         }
     }
+
+
     public static void main(String[] args) {
         Assignment1 assignment1 = new Assignment1();
         assignment1.init();
@@ -254,7 +258,7 @@ public class Assignment1 {
 //        assignment1.solution2();
 //        assignment1.solution3();
 //        assignment1.solution6();
-        assignment1.solution4();
+        assignment1.solution8();
 
     }
 
