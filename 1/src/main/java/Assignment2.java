@@ -30,7 +30,7 @@ public class Assignment2 {
     private final String S5P = "create index name_three_index on orders(name)";
 
     private final String S6 = "select * from products where nums>150";
-    
+
     private final String S6P = "create index nums_index on products(nums)";
 
     private void init() {
