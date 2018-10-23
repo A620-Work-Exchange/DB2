@@ -1,6 +1,5 @@
 package util;
 
-import domain.BundleObject;
 import domain.enumeration.BundleType;
 
 public class BundleInitializer {

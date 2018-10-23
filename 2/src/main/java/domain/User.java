@@ -33,24 +33,28 @@ public class User implements Serializable {
     private Set<Bundle> bundleList = new HashSet<>();
 
     /**
-     * 通话时间
+     * 通话剩余时间
      */
-    private int callUsage;
+    private int callRemain;
 
     /**
-     * 短信量
+     * 短信剩余量
      */
-    private double SMSUsage;
+    private int SMSRemain;
 
     /**
-     * 本地流量使用量
+     * 本地流量剩余量
      */
-    private double localDataUsage;
+    private double localDataRemain;
 
     /**
-     * 国内流量使用量
+     * 国内流量剩余量
      */
-    private double domesticDataUsage;
+    private double domesticDataRemain;
+
+
+    public User() {
+    }
 
     public User(String username, String password) {
         this.username = username;
@@ -73,16 +77,16 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, double balance,
-                Set<Bundle> bundleList, int callUsage, double SMSUsage,
-                double localDataUsage, double domesticDataUsage) {
+                Set<Bundle> bundleList, int callRemain, int SMSRemain,
+                double localDataRemain, double domesticDataRemain) {
         this.username = username;
         this.password = password;
         this.balance = balance;
         this.bundleList = bundleList;
-        this.callUsage = callUsage;
-        this.SMSUsage = SMSUsage;
-        this.localDataUsage = localDataUsage;
-        this.domesticDataUsage = domesticDataUsage;
+        this.callRemain = callRemain;
+        this.SMSRemain = SMSRemain;
+        this.localDataRemain = localDataRemain;
+        this.domesticDataRemain = domesticDataRemain;
     }
 
     public double getBalance() {
@@ -93,8 +97,6 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
-    public User() {
-    }
 
 
     public String getUsername() {
@@ -121,35 +123,35 @@ public class User implements Serializable {
         this.bundleList = bundleList;
     }
 
-    public int getCallUsage() {
-        return callUsage;
+    public int getCallRemain() {
+        return callRemain;
     }
 
-    public void setCallUsage(int callUsage) {
-        this.callUsage = callUsage;
+    public void setCallRemain(int callRemain) {
+        this.callRemain = callRemain;
     }
 
-    public double getSMSUsage() {
-        return SMSUsage;
+    public int getSMSRemain() {
+        return SMSRemain;
     }
 
-    public void setSMSUsage(double SMSUsage) {
-        this.SMSUsage = SMSUsage;
+    public void setSMSRemain(int SMSRemain) {
+        this.SMSRemain = SMSRemain;
     }
 
-    public double getLocalDataUsage() {
-        return localDataUsage;
+    public double getLocalDataRemain() {
+        return localDataRemain;
     }
 
-    public void setLocalDataUsage(double localDataUsage) {
-        this.localDataUsage = localDataUsage;
+    public void setLocalDataRemain(double localDataRemain) {
+        this.localDataRemain = localDataRemain;
     }
 
-    public double getDomesticDataUsage() {
-        return domesticDataUsage;
+    public double getDomesticDataRemain() {
+        return domesticDataRemain;
     }
 
-    public void setDomesticDataUsage(double domesticDataUsage) {
-        this.domesticDataUsage = domesticDataUsage;
+    public void setDomesticDataRemain(double domesticDataRemain) {
+        this.domesticDataRemain = domesticDataRemain;
     }
 }

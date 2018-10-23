@@ -1,4 +1,4 @@
-package domain;
+package util;
 
 /**
  * 本地固化的套餐辅助类，包含套餐本身的所有属性

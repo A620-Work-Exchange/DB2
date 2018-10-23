@@ -7,6 +7,9 @@ import domain.enumeration.BundleType;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * 每个月初都会初始化一次用户的套餐服务
+ */
 public class FeeCalculator {
 
     /**
@@ -20,6 +23,8 @@ public class FeeCalculator {
         double callLimitTime = .0;
         int SMSLimit = 0;
         Set<Bundle> bundleList = user.getBundleList();
+
+
         for(Bundle bundle: bundleList) {
             if(bundle.getBundleType().equals(BundleType.Call) &&
                     DateUtil.isEfficient(bundle.getEndDate(), currentDate)) {
@@ -30,8 +35,8 @@ public class FeeCalculator {
                 sumFee += 10;
                 SMSLimit += 200;
             }
-            double exceedUsage = user.getCallUsage() - callLimitTime;
-            double exceedSMS = user.getSMSUsage() - SMSLimit;
+            double exceedUsage = user.getCallRemain() - callLimitTime;
+            double exceedSMS = user.getSMSRemain() - SMSLimit;
             if(exceedUsage > 0) {
                 sumFee += 0.5 * (-1 * Math.ceil(exceedUsage));
             }
@@ -60,8 +65,8 @@ public class FeeCalculator {
             }
         }
         // 分别计算超出量
-        double exceedLocalDataUsage = localDataLimit - user.getLocalDataUsage();
-        double exceedDomesticDataUsage = domesticDataLimit - user.getDomesticDataUsage();
+        double exceedLocalDataUsage = localDataLimit - user.getLocalDataRemain();
+        double exceedDomesticDataUsage = domesticDataLimit - user.getDomesticDataRemain();
 
         if(exceedDomesticDataUsage < 0) {
             sumFee += Math.ceil(-1 * exceedDomesticDataUsage) * 3;

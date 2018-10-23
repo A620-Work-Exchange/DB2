@@ -11,8 +11,7 @@ public class DateUtil {
 
     public static  LocalDate getFirstDayNextMonth() {
         LocalDate today = LocalDate.now();
-        LocalDate resDay = today.with(TemporalAdjusters.firstDayOfNextMonth());
-        return resDay;
+        return today.with(TemporalAdjusters.firstDayOfNextMonth());
     }
 
     public static LocalDate getDateFewMonthLaterFromToday(int monthPeriod) {

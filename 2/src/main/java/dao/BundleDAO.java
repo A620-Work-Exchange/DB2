@@ -82,6 +82,12 @@ public class BundleDAO {
         }
     }
 
+    /**
+     * 如果取消套餐下个月起生效, endDate设为月底
+     * @param username
+     * @param buddleId
+     * @return
+     */
     public boolean removeBundleUntilNextMonth(String username, int buddleId) {
         try {
             User user = userDAO.findUserByUserName(username);
@@ -118,6 +124,7 @@ public class BundleDAO {
             return null;
         }
     }
+
 
 
 }
