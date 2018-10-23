@@ -1,190 +1,119 @@
 package domain;
 
+import domain.enumeration.BundleType;
+import util.DateUtil;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
+
+@Entity(name = "Bundle")
 public class Bundle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     /**
-     * 通话费用/分钟
+     * 套餐类型
      */
-    private double callFee;
+    private BundleType bundleType;
 
     /**
-     * 短信费用/条
+     * 套餐订购日期
      */
-    private double SMSFee;
+    private LocalDate orderDate;
 
     /**
-     * 本地流量费用/G
+     * 生效日期
      */
-    private double localDataFee;
+    private LocalDate beginDate;
 
     /**
-     * 国内流量费用/G
+     * 如有必要设定套餐时间/月
      */
-    private double domesticDataFee;
+    private int period;
 
     /**
-     * 套餐功能费用
+     * 截止日期
      */
-    private double functionFee;
-
-    /**
-     * 电话免费时长
-     */
-    private double freeCallLimit;
-
-    /**
-     * 超出套餐费用/分钟
-     */
-    private double exceedCallFee;
-
-    /**
-     * 短信免费条数
-     */
-    private double freeSMSLimit;
-
-    /**
-     * 超出短信费用/条
-     */
-    private double exceedSMSFee;
-
-    /**
-     * 本地流量免费量
-     */
-    private double freeLocalDataLimit;
-
-    /**
-     * 超出本地流量费用/M
-     */
-    private double exceedLocalDataFee;
-
-    /**
-     * 国内流量免费量
-     */
-    private double freeDomesticDataLimit;
-
-    /**
-     * 超出国内流量费用/M
-     */
-    private double exceedDomesticDataLimit;
+    private LocalDate endDate;
 
     public Bundle() {
-        this.callFee = 0.5;
-        this.SMSFee = 0.1;
-        this.localDataFee = 2;
-        this.domesticDataFee = 5;
-        this.functionFee = 0;
-        this.freeCallLimit = 0;
-        this.exceedCallFee = 0.5;
-        this.freeSMSLimit = 0;
-        this.exceedSMSFee = 0.1;
-        this.freeLocalDataLimit = 2000;
-        this.exceedLocalDataFee = 2;
-        this.freeDomesticDataLimit = 2000;
-        this.freeDomesticDataLimit = 5;
+    }
+
+    public Bundle(BundleType bundleType, LocalDate orderDate, LocalDate beginDate, LocalDate endDate) {
+        this.bundleType = bundleType;
+        this.orderDate = orderDate;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
+    }
+
+    public Bundle(BundleType bundleType, LocalDate orderDate, LocalDate endDate) {
+        this.bundleType = bundleType;
+        this.orderDate = orderDate;
+        this.beginDate = DateUtil.getCurrentDate();
+        this.period = 1;
+        this.endDate = endDate;
     }
 
 
-    public double getSMSFee() {
-        return SMSFee;
+    public Bundle(BundleType bundleType, LocalDate beginDate,
+                  int period, LocalDate endDate) {
+        this.bundleType = bundleType;
+        this.orderDate = DateUtil.getCurrentDate();
+        this.beginDate = beginDate;
+        this.period = period;
+        this.endDate = endDate;
     }
 
-    public void setSMSFee(double SMSFee) {
-        this.SMSFee = SMSFee;
+    public Bundle(BundleType bundleType, LocalDate orderDate,
+                  LocalDate beginDate, int period, LocalDate endDate) {
+        this.bundleType = bundleType;
+        this.orderDate = orderDate;
+        this.beginDate = beginDate;
+        this.period = period;
+        this.endDate = endDate;
     }
 
-    public double getCallFee() {
-        return callFee;
+    public BundleType getBundleType() {
+        return bundleType;
     }
 
-    public void setCallFee(double callFee) {
-        this.callFee = callFee;
+    public void setBundleType(BundleType bundleType) {
+        this.bundleType = bundleType;
     }
 
-    public double getLocalDataFee() {
-        return localDataFee;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setLocalDataFee(double localDataFee) {
-        this.localDataFee = localDataFee;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public double getDomesticDataFee() {
-        return domesticDataFee;
+    public LocalDate getBeginDate() {
+        return beginDate;
     }
 
-    public void setDomesticDataFee(double domesticDataFee) {
-        this.domesticDataFee = domesticDataFee;
+    public void setBeginDate(LocalDate beginDate) {
+        this.beginDate = beginDate;
     }
 
-    public double getFunctionFee() {
-        return functionFee;
+    public int getPeriod() {
+        return period;
     }
 
-    public void setFunctionFee(double functionFee) {
-        this.functionFee = functionFee;
+    public void setPeriod(int period) {
+        this.period = period;
     }
 
-    public double getFreeCallLimit() {
-        return freeCallLimit;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setFreeCallLimit(double freeCallLimit) {
-        this.freeCallLimit = freeCallLimit;
-    }
-
-    public double getFreeSMSLimit() {
-        return freeSMSLimit;
-    }
-
-    public void setFreeSMSLimit(double freeSMSLimit) {
-        this.freeSMSLimit = freeSMSLimit;
-    }
-
-    public double getFreeLocalDataLimit() {
-        return freeLocalDataLimit;
-    }
-
-    public void setFreeLocalDataLimit(double freeLocalDataLimit) {
-        this.freeLocalDataLimit = freeLocalDataLimit;
-    }
-
-    public double getFreeDomesticDataLimit() {
-        return freeDomesticDataLimit;
-    }
-
-    public void setFreeDomesticDataLimit(double freeDomesticDataLimit) {
-        this.freeDomesticDataLimit = freeDomesticDataLimit;
-    }
-
-    public double getExceedCallFee() {
-        return exceedCallFee;
-    }
-
-    public void setExceedCallFee(double exceedCallFee) {
-        this.exceedCallFee = exceedCallFee;
-    }
-
-    public double getExceedSMSFee() {
-        return exceedSMSFee;
-    }
-
-    public void setExceedSMSFee(double exceedSMSFee) {
-        this.exceedSMSFee = exceedSMSFee;
-    }
-
-    public double getExceedLocalDataFee() {
-        return exceedLocalDataFee;
-    }
-
-    public void setExceedLocalDataFee(double exceedLocalDataFee) {
-        this.exceedLocalDataFee = exceedLocalDataFee;
-    }
-
-    public double getExceedDomesticDataLimit() {
-        return exceedDomesticDataLimit;
-    }
-
-    public void setExceedDomesticDataLimit(double exceedDomesticDataLimit) {
-        this.exceedDomesticDataLimit = exceedDomesticDataLimit;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }

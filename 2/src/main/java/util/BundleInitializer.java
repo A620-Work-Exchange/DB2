@@ -1,11 +1,11 @@
 package util;
 
-import domain.Bundle;
+import domain.BundleObject;
 import domain.enumeration.BundleType;
 
 public class BundleInitializer {
-    public static Bundle initBundle(BundleType bundleType) {
-        Bundle bundle = new Bundle();
+    public static BundleObject initBundle(BundleType bundleType) {
+        BundleObject bundle = new BundleObject();
         switch(bundleType) {
             case Base:
                 return bundle;
@@ -31,7 +31,7 @@ public class BundleInitializer {
                 bundle.setFreeDomesticDataLimit(2000);
                 bundle.setExceedDomesticDataLimit(3);
         }
-        return new Bundle();
+        return new BundleObject();
     }
 
 
