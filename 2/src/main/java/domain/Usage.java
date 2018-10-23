@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+
 @Entity
 public class Usage implements Serializable {
     /**
@@ -65,7 +66,7 @@ public class Usage implements Serializable {
         return localDate;
     }
 
-    public void setLocalDate(LocalDate localDate) {
+    public void setLocalDateTime(LocalDate localDate) {
         this.localDate = localDate;
     }
 

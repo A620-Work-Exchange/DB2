@@ -1,6 +1,9 @@
 package util;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
@@ -11,6 +14,7 @@ public class DateUtil {
 
     public static  LocalDate getFirstDayNextMonth() {
         LocalDate today = LocalDate.now();
+
         return today.with(TemporalAdjusters.firstDayOfNextMonth());
     }
 
@@ -23,16 +27,17 @@ public class DateUtil {
     }
 
     public static boolean isEfficient(LocalDate endDate, LocalDate currentDate) {
-        if(endDate.compareTo(currentDate) > 0) {
-            return true;
-        }
-        return false;
+        return endDate.compareTo(currentDate) > 0;
     }
 
     public static LocalDate getLastDayOfCurrentMonth() {
         LocalDate today = LocalDate.now();
-        LocalDate lastDay = today.with(TemporalAdjusters.lastDayOfMonth());
-        return lastDay;
+        return today.with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    public static LocalDateTime getCurrentDaytoSeconds() {
+        LocalDateTime now = LocalDateTime.now();
+        return now;
     }
 
     public static void main(String[] args) {
@@ -41,6 +46,7 @@ public class DateUtil {
         LocalDate currentDate = LocalDate.parse("2020-01-01");
         System.out.println(isEfficient(endDate, currentDate));
         System.out.println(getLastDayOfCurrentMonth());
+        System.out.println("*** " + getCurrentDaytoSeconds());
     }
 
 }
