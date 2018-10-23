@@ -36,6 +36,25 @@ public class Bill implements Serializable {
      */
     private double domesticDataUsage;
 
+    /**
+     * 通话费用
+     */
+    private double callFee;
+
+    /**
+     * 短信费用
+     */
+    private double SMSFee;
+
+    /**
+     * 本地流量费用
+     */
+    private double localDataFee;
+
+    /**
+     * 国内流量费用
+     */
+    private double domesticDataFee;
 
     public Bill() {
     }
@@ -48,6 +67,20 @@ public class Bill implements Serializable {
         this.SMSUsage = SMSUsage;
         this.localDataUsage = localDataUsage;
         this.domesticDataUsage = domesticDataUsage;
+    }
+
+    public Bill(Date date, User user, double callUsage, int SMSUsage,
+                double localDataUsage, double domesticDataUsage, double callFee, double SMSFee, double localDataFee, double domesticDataFee) {
+        this.date = date;
+        this.user = user;
+        this.callUsage = callUsage;
+        this.SMSUsage = SMSUsage;
+        this.localDataUsage = localDataUsage;
+        this.domesticDataUsage = domesticDataUsage;
+        this.callFee = callFee;
+        this.SMSFee = SMSFee;
+        this.localDataFee = localDataFee;
+        this.domesticDataFee = domesticDataFee;
     }
 
     public Date getDate() {

@@ -18,6 +18,7 @@ public class FeeCalculator {
     public static double getCallFee(User user, LocalDate currentDate) {
         double sumFee = .0;
         double callLimitTime = .0;
+        int SMSLimit = 0;
         Set<Bundle> bundleList = user.getBundleList();
         for(Bundle bundle: bundleList) {
             if(bundle.getBundleType().equals(BundleType.Call) &&
@@ -25,9 +26,17 @@ public class FeeCalculator {
                 sumFee += 20;
                 callLimitTime += 100;
             }
+            if(bundle.getBundleType().equals(BundleType.SMS)) {
+                sumFee += 10;
+                SMSLimit += 200;
+            }
             double exceedUsage = user.getCallUsage() - callLimitTime;
+            double exceedSMS = user.getSMSUsage() - SMSLimit;
             if(exceedUsage > 0) {
                 sumFee += 0.5 * (-1 * Math.ceil(exceedUsage));
+            }
+            if(exceedSMS > 0) {
+                sumFee += 0.1 * (-1 * exceedSMS);
             }
         }
         return sumFee;
@@ -63,6 +72,7 @@ public class FeeCalculator {
         return sumFee;
 
     }
+
 
 
 }
