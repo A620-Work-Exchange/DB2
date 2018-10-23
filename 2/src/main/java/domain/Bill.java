@@ -56,6 +56,11 @@ public class Bill implements Serializable {
      */
     private double domesticDataFee;
 
+    /**
+     * 总费用
+     */
+    private double sumFee;
+
     public Bill() {
     }
 
@@ -81,6 +86,23 @@ public class Bill implements Serializable {
         this.SMSFee = SMSFee;
         this.localDataFee = localDataFee;
         this.domesticDataFee = domesticDataFee;
+    }
+
+    public Bill(Date date, User user, double callUsage,
+                int SMSUsage, double localDataUsage, double domesticDataUsage,
+                double callFee, double SMSFee, double localDataFee,
+                double domesticDataFee, double sumFee) {
+        this.date = date;
+        this.user = user;
+        this.callUsage = callUsage;
+        this.SMSUsage = SMSUsage;
+        this.localDataUsage = localDataUsage;
+        this.domesticDataUsage = domesticDataUsage;
+        this.callFee = callFee;
+        this.SMSFee = SMSFee;
+        this.localDataFee = localDataFee;
+        this.domesticDataFee = domesticDataFee;
+        this.sumFee = sumFee;
     }
 
     public Date getDate() {
@@ -129,5 +151,45 @@ public class Bill implements Serializable {
 
     public void setDomesticDataUsage(double domesticDataUsage) {
         this.domesticDataUsage = domesticDataUsage;
+    }
+
+    public double getCallFee() {
+        return callFee;
+    }
+
+    public void setCallFee(double callFee) {
+        this.callFee = callFee;
+    }
+
+    public double getSMSFee() {
+        return SMSFee;
+    }
+
+    public void setSMSFee(double SMSFee) {
+        this.SMSFee = SMSFee;
+    }
+
+    public double getLocalDataFee() {
+        return localDataFee;
+    }
+
+    public void setLocalDataFee(double localDataFee) {
+        this.localDataFee = localDataFee;
+    }
+
+    public double getDomesticDataFee() {
+        return domesticDataFee;
+    }
+
+    public void setDomesticDataFee(double domesticDataFee) {
+        this.domesticDataFee = domesticDataFee;
+    }
+
+    public double getSumFee() {
+        return sumFee;
+    }
+
+    public void setSumFee(double sumFee) {
+        this.sumFee = sumFee;
     }
 }
