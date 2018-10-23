@@ -47,6 +47,8 @@ public class BundleDAO {
         }
     }
 
+    public boolean removeBundleImmediately(String username, ) {}
+
 
 
 }
