@@ -43,6 +43,8 @@ public class Bundle {
     public Bundle() {
     }
 
+
+
     public Bundle(BundleType bundleType, LocalDate orderDate, LocalDate beginDate, LocalDate endDate) {
         this.bundleType = bundleType;
         this.orderDate = orderDate;
@@ -75,6 +77,10 @@ public class Bundle {
         this.beginDate = beginDate;
         this.period = period;
         this.endDate = endDate;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public BundleType getBundleType() {

@@ -30,11 +30,18 @@ public class DateUtil {
         return false;
     }
 
+    public static LocalDate getLastDayOfCurrentMonth() {
+        LocalDate today = LocalDate.now();
+        LocalDate lastDay = today.with(TemporalAdjusters.lastDayOfMonth());
+        return lastDay;
+    }
+
     public static void main(String[] args) {
         System.out.println(isEfficient(getFirstDayNextMonth(), getCurrentDate()));
         LocalDate endDate = LocalDate.parse("2019-01-01");
         LocalDate currentDate = LocalDate.parse("2020-01-01");
         System.out.println(isEfficient(endDate, currentDate));
+        System.out.println(getLastDayOfCurrentMonth());
     }
 
 }
