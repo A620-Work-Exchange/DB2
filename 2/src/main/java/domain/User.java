@@ -1,8 +1,6 @@
 package domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +27,7 @@ public class User implements Serializable {
     /**
      * 订购的套餐
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Bundle> bundleList = new HashSet<>();
 
     /**

@@ -28,13 +28,16 @@ public class UserDAO {
         return list.get(0);
     }
 
-    public double getCallFee(String username) {
-        User user = findUserByUserName(username);
-        return FeeCalculator.getCallFee(user, DateUtil.getCurrentDate());
-    }
-
-    public double getDataFee(String username) {
-        User user = findUserByUserName(username);
-        return FeeCalculator.getDataFee(user, DateUtil.getCurrentDate());
-    }
+   public boolean topUp(String username, double amount) {
+       try {
+           User user = findUserByUserName(username);
+           double balance = user.getBalance();
+           user.setBalance(balance + amount);
+           HQLUtil.update(user);
+           return true;
+       } catch (Exception ex) {
+           ex.printStackTrace();
+           return false;
+       }
+   }
 }

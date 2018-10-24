@@ -27,7 +27,7 @@ public class BundleDAO {
             LocalDate endDate = DateUtil.getDateFewMonthLaterFromToday(period);
             Bundle bundle = new Bundle(bundleType, beginDate, period, endDate);
             User user = userDAO.findUserByUserName(username);
-            Set<Bundle> bundleSet = new HashSet<>();
+            Set<Bundle> bundleSet = user.getBundleList();
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
             HQLUtil.update(user);

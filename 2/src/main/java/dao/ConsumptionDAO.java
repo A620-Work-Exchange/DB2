@@ -9,8 +9,11 @@ import java.util.List;
 
 
 public class ConsumptionDAO {
-    public boolean addCallUsage(User user, double callUsage) {
+    private UserDAO userDAO = new UserDAO();
+
+    public boolean addCallUsage(String username, double callUsage) {
         try {
+            User user = userDAO.findUserByUserName(username);
             Consumption consumption = new Consumption();
             consumption.setLocalDate(DateUtil.getCurrentDate());
             consumption.setUser(user);
@@ -35,8 +38,9 @@ public class ConsumptionDAO {
         }
     }
 
-    public boolean addSMSUsage(User user, int SMSAmount) {
+    public boolean addSMSUsage(String username, int SMSAmount) {
         try {
+            User user = userDAO.findUserByUserName(username);
             int SMSRemain = user.getSMSRemain();
             int remain = SMSRemain - SMSAmount;
             Consumption consumption = new Consumption();
@@ -62,8 +66,9 @@ public class ConsumptionDAO {
         }
     }
 
-    public boolean addLocalDataUsage(User user, double localDataUsage) {
+    public boolean addLocalDataUsage(String username, double localDataUsage) {
         try {
+            User user = userDAO.findUserByUserName(username);
             double balance = user.getBalance();
             double localDataRemain = user.getLocalDataRemain();
             double remain = localDataRemain - localDataUsage;
@@ -89,8 +94,9 @@ public class ConsumptionDAO {
         }
     }
 
-    public boolean addDomesticDataUsage(User user, double domesticDataUsage) {
+    public boolean addDomesticDataUsage(String username, double domesticDataUsage) {
         try {
+            User user = userDAO.findUserByUserName(username);
             Consumption consumption = new Consumption();
             consumption.setLocalDate(DateUtil.getCurrentDate());
             consumption.setLocalDataUsage(domesticDataUsage);
@@ -124,8 +130,7 @@ public class ConsumptionDAO {
     public List<Consumption> listConsumptionByMonth(String month) {
         try {
             String oprdStr = "from Consumption where date";
-            List<Consumption> list = HQLUtil.find(oprdStr);
-            return list;
+            return (List<Consumption>) HQLUtil.find(oprdStr);
         }catch (Exception ex) {
             ex.printStackTrace();
             return null;

@@ -9,6 +9,7 @@ public class ConsumptionDAOTest {
 
     @org.junit.Test
     public void addCallUsage() {
+
     }
 
     @org.junit.Test
