@@ -1,17 +1,23 @@
 package dao;
 
-import domain.Usage;
+import domain.Consumption;
 import domain.User;
 import util.DateUtil;
 import util.HQLUtil;
 
-import java.time.LocalDate;
+import java.util.List;
 
-public class UsageDAO {
+
+public class ConsumptionDAO {
     public boolean addCallUsage(User user, double callUsage) {
         try {
-            LocalDate localDate;
+            Consumption consumption = new Consumption();
+            consumption.setLocalDate(DateUtil.getCurrentDate());
+            consumption.setUser(user);
             double callTimeRemain = user.getCallRemain();
+            consumption.setCallUsage(callUsage);
+            HQLUtil.add(consumption);
+
             int remain = (int) Math.ceil(callTimeRemain - callUsage);
             user.setCallRemain(remain);
             double balance = user.getBalance();
@@ -33,6 +39,12 @@ public class UsageDAO {
         try {
             int SMSRemain = user.getSMSRemain();
             int remain = SMSRemain - SMSAmount;
+            Consumption consumption = new Consumption();
+            consumption.setLocalDate(DateUtil.getCurrentDate());
+            consumption.setSMSUsage(SMSAmount);
+            consumption.setUser(user);
+            HQLUtil.add(consumption);
+
             user.setSMSRemain(remain);
             double balance = user.getBalance();
             if(remain < 0) {
@@ -57,6 +69,12 @@ public class UsageDAO {
             double remain = localDataRemain - localDataUsage;
             user.setLocalDataRemain(remain);
 
+            Consumption consumption = new Consumption();
+            consumption.setLocalDate(DateUtil.getCurrentDate());
+            consumption.setLocalDataUsage(localDataUsage);
+            consumption.setUser(user);
+            HQLUtil.add(consumption);
+
             if(remain < 0) {
                 System.out.println("套餐本地流量已用完");
                 balance -= (-3) * remain;
@@ -73,12 +91,18 @@ public class UsageDAO {
 
     public boolean addDomesticDataUsage(User user, double domesticDataUsage) {
         try {
+            Consumption consumption = new Consumption();
+            consumption.setLocalDate(DateUtil.getCurrentDate());
+            consumption.setLocalDataUsage(domesticDataUsage);
+            consumption.setUser(user);
+            HQLUtil.add(consumption);
+
             double domesticDataRemain = user.getDomesticDataRemain();
             double balance = user.getBalance();
             double remain = domesticDataRemain - domesticDataUsage;
             user.setDomesticDataRemain(remain);
 
-            if ( remain < 0 ) {
+            if (remain < 0 ) {
                 System.out.println("国内流量套餐用完");
                 balance -= (-3) * remain;
                 user.setBalance(balance);
@@ -91,4 +115,20 @@ public class UsageDAO {
             return false;
         }
     }
+
+    /**
+     * 按照对应月查找所有消耗
+     * @param month
+     * @return
+     */
+    public List<Consumption> listConsumptionByMonth(String month) {
+        try {
+            String oprdStr = "from Consumption where date";
+            List<Consumption> list = HQLUtil.find(oprdStr);
+            return list;
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+
+        }    }
 }

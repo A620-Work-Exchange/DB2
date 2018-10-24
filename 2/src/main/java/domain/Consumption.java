@@ -4,52 +4,30 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
 @Entity
-public class Usage implements Serializable {
-    /**
-     * id
-     */
+public class Consumption implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
-    /**
-     * 日期
-     */
     private LocalDate localDate;
 
-    /**
-     * 用户
-     */
     @OneToOne
     private User user;
 
-    /**
-     * 通话时间消耗
-     */
     private double callUsage;
 
+    private double SMSUsage;
 
-    /**
-     * 短信消耗
-     */
-    private int SMSUsage;
-
-    /**
-     * 本地流量消耗
-     */
     private double localDataUsage;
 
-    /**
-     * 国内流量消耗
-     */
     private double domesticDataUsage;
 
-    public Usage(LocalDate localDate, User user,
-                 double callUsage, int SMSUsage, double localDataUsage,
-                 double domesticDataUsage) {
+    public Consumption() {
+    }
+
+    public Consumption(LocalDate localDate, User user, double callUsage,
+                       double SMSUsage, double localDataUsage, double domesticDataUsage) {
         this.localDate = localDate;
         this.user = user;
         this.callUsage = callUsage;
@@ -66,7 +44,7 @@ public class Usage implements Serializable {
         return localDate;
     }
 
-    public void setLocalDateTime(LocalDate localDate) {
+    public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
     }
 
@@ -86,11 +64,11 @@ public class Usage implements Serializable {
         this.callUsage = callUsage;
     }
 
-    public int getSMSUsage() {
+    public double getSMSUsage() {
         return SMSUsage;
     }
 
-    public void setSMSUsage(int SMSUsage) {
+    public void setSMSUsage(double SMSUsage) {
         this.SMSUsage = SMSUsage;
     }
 

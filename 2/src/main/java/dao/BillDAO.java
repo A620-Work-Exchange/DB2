@@ -11,6 +11,7 @@ public class BillDAO {
     public boolean addBill(String date) {
         try {
             LocalDate localDate = LocalDate.parse(date);
+            double callUsage = .0;
             return true;
 
         }catch (Exception ex) {

@@ -6,7 +6,7 @@ public class Main {
     private static UserDAO userDAO = new UserDAO();
     public static void main(String[] args) {
 
-        userDAO.addUser("6+", "123456");
+        userDAO.addUser("6++", "123456");
 
     }
 
