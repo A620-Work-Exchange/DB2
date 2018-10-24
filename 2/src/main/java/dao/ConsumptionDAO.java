@@ -1,15 +1,20 @@
 package dao;
 
+import domain.Bundle;
 import domain.Consumption;
 import domain.User;
+import domain.enumeration.BundleType;
 import util.DateUtil;
 import util.HQLUtil;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class ConsumptionDAO {
     private UserDAO userDAO = new UserDAO();
+    private BundleDAO bundleDAO = new BundleDAO();
+    private static final String FREE_NOTIF = "本次套餐减免花费0元，套餐还剩";
 
     public boolean addCallUsage(String username, double callUsage) {
         try {
@@ -19,17 +24,24 @@ public class ConsumptionDAO {
             consumption.setUser(user);
             double callTimeRemain = user.getCallRemain();
             consumption.setCallUsage(callUsage);
-            HQLUtil.add(consumption);
+
 
             int remain = (int) Math.ceil(callTimeRemain - callUsage);
             user.setCallRemain(remain);
             double balance = user.getBalance();
-            if ( remain < 0 ) {
+            if (remain < 0 ) {
                 System.out.println("套餐电话时长已用完...");
                 balance -= (-0.5) * remain;
                 user.setBalance(balance);
                 user.setCallRemain(0);
+                consumption.setFee(-0.5 * remain);
+                System.out.println("本次通话耗时 " + callUsage + " 分钟，" + "花费 " +
+                -0.5*remain + "元");
+            }else {
+                consumption.setFee(0);
+                System.out.println(FREE_NOTIF + remain + " 分钟");
             }
+            HQLUtil.add(consumption);
             HQLUtil.update(user);
             return true;
         }catch (Exception ex) {
@@ -47,7 +59,6 @@ public class ConsumptionDAO {
             consumption.setLocalDate(DateUtil.getCurrentDate());
             consumption.setSMSUsage(SMSAmount);
             consumption.setUser(user);
-            HQLUtil.add(consumption);
 
             user.setSMSRemain(remain);
             double balance = user.getBalance();
@@ -56,8 +67,15 @@ public class ConsumptionDAO {
                 balance -= (-0.1) * remain;
                 user.setBalance(balance);
                 user.setSMSRemain(0);
+                consumption.setFee(-0.1 * remain);
+                System.out.println("本次短信发送 " + SMSAmount + " 条，" +
+                        "花费 " + -0.1 * remain + " 元");
+            } else {
+                consumption.setFee(0);
+                System.out.println(FREE_NOTIF + remain + "条");
             }
             HQLUtil.update(user);
+            HQLUtil.add(consumption);
             return true;
 
         }catch (Exception ex) {
@@ -69,6 +87,9 @@ public class ConsumptionDAO {
     public boolean addLocalDataUsage(String username, double localDataUsage) {
         try {
             User user = userDAO.findUserByUserName(username);
+            boolean isOrdered = bundleDAO.isOrdered(user, BundleType.Local); // 是否订购过套餐
+            double p = isOrdered? 3: 2;
+
             double balance = user.getBalance();
             double localDataRemain = user.getLocalDataRemain();
             double remain = localDataRemain - localDataUsage;
@@ -78,15 +99,23 @@ public class ConsumptionDAO {
             consumption.setLocalDate(DateUtil.getCurrentDate());
             consumption.setLocalDataUsage(localDataUsage);
             consumption.setUser(user);
-            HQLUtil.add(consumption);
 
             if(remain < 0) {
                 System.out.println("套餐本地流量已用完");
-                balance -= (-3) * remain;
+                balance -= (-p) * remain;
                 user.setBalance(balance);
                 user.setLocalDataRemain(0);
+                consumption.setFee(-p * remain);
+                System.out.println("本次本地流量花费 " + localDataUsage + "M, 花费" +
+                -p * remain + " 元");
+            } else {
+                consumption.setFee(0);
+                System.out.println(FREE_NOTIF + remain + "M");
+
             }
+
             HQLUtil.update(user);
+            HQLUtil.add(consumption);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -101,7 +130,6 @@ public class ConsumptionDAO {
             consumption.setLocalDate(DateUtil.getCurrentDate());
             consumption.setLocalDataUsage(domesticDataUsage);
             consumption.setUser(user);
-            HQLUtil.add(consumption);
 
             double domesticDataRemain = user.getDomesticDataRemain();
             double balance = user.getBalance();
@@ -113,8 +141,15 @@ public class ConsumptionDAO {
                 balance -= (-3) * remain;
                 user.setBalance(balance);
                 user.setDomesticDataRemain(0);
+                consumption.setFee(-3 * remain);
+                System.out.println("本次国内流量花费 " + domesticDataRemain + "M, 花费" +
+                        -3 * remain + " 元");
+            } else {
+                consumption.setFee(0);
+                System.out.println(FREE_NOTIF + remain + "M");
             }
             HQLUtil.update(user);
+            HQLUtil.add(consumption);
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();

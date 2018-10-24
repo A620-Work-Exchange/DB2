@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class BillDAO {
     /**
-     * 按月生成账单
+     * 按月生成账单, 制定日期格式输入为yyyy-mm如2018-06
      * @param date
      * @return
      */

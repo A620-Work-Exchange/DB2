@@ -10,18 +10,38 @@ public class Consumption implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    /**
+     * 日期
+     */
     private LocalDate localDate;
 
     @OneToOne
     private User user;
 
+    /**
+     * 通话消耗
+     */
     private double callUsage;
 
+    /**
+     * 短信消耗
+     */
     private double SMSUsage;
 
+    /**
+     * 本地流量消耗
+     */
     private double localDataUsage;
 
+    /**
+     * 国内流量消耗
+     */
     private double domesticDataUsage;
+
+    /**
+     * 费用
+     */
+    private double fee;
 
     public Consumption() {
     }
@@ -86,5 +106,13 @@ public class Consumption implements Serializable{
 
     public void setDomesticDataUsage(double domesticDataUsage) {
         this.domesticDataUsage = domesticDataUsage;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
     }
 }

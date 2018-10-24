@@ -47,6 +47,7 @@ public class DateUtil {
         System.out.println(isEfficient(endDate, currentDate));
         System.out.println(getLastDayOfCurrentMonth());
         System.out.println("*** " + getCurrentDaytoSeconds());
+        System.out.println(LocalDate.parse("2018-06"));
     }
 
 }

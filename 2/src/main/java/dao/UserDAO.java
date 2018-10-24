@@ -1,8 +1,6 @@
 package dao;
 
 import domain.User;
-import util.DateUtil;
-import util.FeeCalculator;
 import util.HQLUtil;
 
 import java.util.ArrayList;

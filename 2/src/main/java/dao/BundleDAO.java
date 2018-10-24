@@ -7,9 +7,7 @@ import util.DateUtil;
 import util.HQLUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BundleDAO {
     private UserDAO userDAO = new UserDAO();
@@ -30,7 +28,7 @@ public class BundleDAO {
             Set<Bundle> bundleSet = user.getBundleList();
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
-            HQLUtil.update(user);
+            updateBalance(user, bundle);
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -54,7 +52,7 @@ public class BundleDAO {
             Set<Bundle> bundleSet = new HashSet<>();
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
-            HQLUtil.update(user);
+            updateBalance(user, bundle);
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -75,6 +73,11 @@ public class BundleDAO {
             Bundle bundle = findBundleById(buddleId);
             bundleSet.remove(bundle);
             user.setBundleList(bundleSet);
+            if(bundleSet.size() == 0) {
+                System.out.println("您已退订所有套餐...");
+            }
+            HQLUtil.update(user);
+            HQLUtil.delete(bundle);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -123,6 +126,63 @@ public class BundleDAO {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    public List<Bundle> listBundleByUsername(String username) {
+        try {
+            User user = userDAO.findUserByUserName(username);
+            List<Bundle> list = new ArrayList<>(user.getBundleList());
+            return list;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean isOrdered(User user, BundleType bundleType) {
+        Set<Bundle> bundleSet = user.getBundleList();
+        for(Bundle bundle: bundleSet) {
+            if(isEfficient(bundle) && bundle.getBundleType().equals(bundleType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEfficient(Bundle bundle) {
+        return DateUtil.isEfficient(bundle.getEndDate(), LocalDate.now());
+    }
+
+    private void updateBalance(User user, Bundle bundle) {
+        double balance = user.getBalance();
+        double baseFee = .0;
+        int callRemain = user.getCallRemain();
+        int SMSRemain = user.getSMSRemain();
+        double localDataRemain = user.getLocalDataRemain();
+        double domesticDataRemain = user.getDomesticDataRemain();
+
+        switch (bundle.getBundleType()) {
+            case Call:
+                baseFee = 20;
+                user.setCallRemain(callRemain + 100);
+                break;
+            case SMS:
+                baseFee = 10;
+                user.setSMSRemain(SMSRemain + 200);
+                break;
+            case Local:
+                baseFee = 20;
+                user.setLocalDataRemain(localDataRemain + 2000);
+                break;
+            case Domestic:
+                baseFee = 30;
+                user.setDomesticDataRemain(domesticDataRemain + 2000);
+                break;
+        }
+
+        balance -= baseFee;
+        user.setBalance(balance);
+        HQLUtil.update(user);
     }
 
 
