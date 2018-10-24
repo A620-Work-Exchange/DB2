@@ -10,7 +10,10 @@ public class Bill implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private Date date;
+    /**
+     * 账单日期
+     */
+    private String date;
 
 
     @OneToOne
@@ -64,7 +67,7 @@ public class Bill implements Serializable {
     public Bill() {
     }
 
-    public Bill(Date date, User user, double callUsage,
+    public Bill(String date, User user, double callUsage,
                 int SMSUsage, double localDataUsage, double domesticDataUsage) {
         this.date = date;
         this.user = user;
@@ -74,7 +77,7 @@ public class Bill implements Serializable {
         this.domesticDataUsage = domesticDataUsage;
     }
 
-    public Bill(Date date, User user, double callUsage, int SMSUsage,
+    public Bill(String date, User user, double callUsage, int SMSUsage,
                 double localDataUsage, double domesticDataUsage, double callFee, double SMSFee, double localDataFee, double domesticDataFee) {
         this.date = date;
         this.user = user;
@@ -88,7 +91,7 @@ public class Bill implements Serializable {
         this.domesticDataFee = domesticDataFee;
     }
 
-    public Bill(Date date, User user, double callUsage,
+    public Bill(String date, User user, double callUsage,
                 int SMSUsage, double localDataUsage, double domesticDataUsage,
                 double callFee, double SMSFee, double localDataFee,
                 double domesticDataFee, double sumFee) {
@@ -105,11 +108,11 @@ public class Bill implements Serializable {
         this.sumFee = sumFee;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

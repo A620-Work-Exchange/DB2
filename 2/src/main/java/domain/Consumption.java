@@ -39,6 +39,26 @@ public class Consumption implements Serializable{
     private double domesticDataUsage;
 
     /**
+     * 通话费用
+     */
+    private double callFee;
+
+    /**
+     * 短信费用
+     */
+    private double SMSFee;
+
+    /**
+     * 本地流量费用
+     */
+    private double localDataFee;
+
+    /**
+     * 国内流量非营业
+     */
+    private double domesticDataFee;
+
+    /**
      * 费用
      */
     private double fee;
@@ -54,6 +74,23 @@ public class Consumption implements Serializable{
         this.SMSUsage = SMSUsage;
         this.localDataUsage = localDataUsage;
         this.domesticDataUsage = domesticDataUsage;
+    }
+
+    public Consumption(LocalDate localDate, User user, double callUsage,
+                       double SMSUsage, double localDataUsage, double domesticDataUsage,
+                       double callFee, double SMSFee, double localDataFee, double domesticDataFee,
+                       double fee) {
+        this.localDate = localDate;
+        this.user = user;
+        this.callUsage = callUsage;
+        this.SMSUsage = SMSUsage;
+        this.localDataUsage = localDataUsage;
+        this.domesticDataUsage = domesticDataUsage;
+        this.callFee = callFee;
+        this.SMSFee = SMSFee;
+        this.localDataFee = localDataFee;
+        this.domesticDataFee = domesticDataFee;
+        this.fee = fee;
     }
 
     public int getId() {
@@ -114,5 +151,37 @@ public class Consumption implements Serializable{
 
     public void setFee(double fee) {
         this.fee = fee;
+    }
+
+    public double getCallFee() {
+        return callFee;
+    }
+
+    public void setCallFee(double callFee) {
+        this.callFee = callFee;
+    }
+
+    public double getSMSFee() {
+        return SMSFee;
+    }
+
+    public void setSMSFee(double SMSFee) {
+        this.SMSFee = SMSFee;
+    }
+
+    public double getLocalDataFee() {
+        return localDataFee;
+    }
+
+    public void setLocalDataFee(double localDataFee) {
+        this.localDataFee = localDataFee;
+    }
+
+    public double getDomesticDataFee() {
+        return domesticDataFee;
+    }
+
+    public void setDomesticDataFee(double domesticDataFee) {
+        this.domesticDataFee = domesticDataFee;
     }
 }

@@ -159,12 +159,15 @@ public class ConsumptionDAO {
 
     /**
      * 按照对应月查找所有消耗
-     * @param month
+     * @param yearMonthStr
      * @return
      */
-    public List<Consumption> listConsumptionByMonth(String month) {
+    public List<Consumption> listConsumptionByMonth(String yearMonthStr) {
         try {
-            String oprdStr = "from Consumption where date";
+            String firstDayOfMonth = DateUtil.getFirstDayOfMonth(yearMonthStr);
+            String lastDayOfMonth = DateUtil.getLastDayOfMonth(yearMonthStr);
+            String oprdStr = "from Consumption where localDate between '" +
+                    firstDayOfMonth + "' and '" + lastDayOfMonth + "'";
             return (List<Consumption>) HQLUtil.find(oprdStr);
         }catch (Exception ex) {
             ex.printStackTrace();

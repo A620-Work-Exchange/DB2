@@ -1,8 +1,12 @@
 package dao;
 
 
+import domain.Consumption;
 import domain.User;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -31,5 +35,14 @@ public class ConsumptionDAOTest {
     @org.junit.Test
     public void addDomesticDataUsage() {
         consumptionDAO.addDomesticDataUsage("陈振宇", 100);
+    }
+
+    @Test
+    public void listConsumptionByMonth() {
+        List<Consumption> list = consumptionDAO.listConsumptionByMonth("2018-10");
+        for(Consumption consumption: list) {
+            System.out.println("id: " + consumption.getId() + "费用" + consumption.getFee()
+            + "用户" + consumption.getUser().getUsername());
+        }
     }
 }
