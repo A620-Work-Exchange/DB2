@@ -39,7 +39,7 @@ public class ConsumptionDAOTest {
 
     @Test
     public void listConsumptionByMonth() {
-        List<Consumption> list = consumptionDAO.listConsumptionByMonth("2018-10");
+        List<Consumption> list = consumptionDAO.listConsumptionByMonth("2018-10", "陈振宇");
         for(Consumption consumption: list) {
             System.out.println("id: " + consumption.getId() + "费用" + consumption.getFee()
             + "用户" + consumption.getUser().getUsername());

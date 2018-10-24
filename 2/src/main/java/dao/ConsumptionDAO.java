@@ -35,10 +35,12 @@ public class ConsumptionDAO {
                 user.setBalance(balance);
                 user.setCallRemain(0);
                 consumption.setFee(-0.5 * remain);
+                consumption.setCallFee(-0.5*remain);
                 System.out.println("本次通话耗时 " + callUsage + " 分钟，" + "花费 " +
                 -0.5*remain + "元");
             }else {
                 consumption.setFee(0);
+                consumption.setCallFee(0);
                 System.out.println(FREE_NOTIF + remain + " 分钟");
             }
             HQLUtil.add(consumption);
@@ -68,10 +70,12 @@ public class ConsumptionDAO {
                 user.setBalance(balance);
                 user.setSMSRemain(0);
                 consumption.setFee(-0.1 * remain);
+                consumption.setSMSFee(-0.1 * remain);
                 System.out.println("本次短信发送 " + SMSAmount + " 条，" +
                         "花费 " + -0.1 * remain + " 元");
             } else {
                 consumption.setFee(0);
+                consumption.setSMSFee(0);
                 System.out.println(FREE_NOTIF + remain + "条");
             }
             HQLUtil.update(user);
@@ -106,10 +110,12 @@ public class ConsumptionDAO {
                 user.setBalance(balance);
                 user.setLocalDataRemain(0);
                 consumption.setFee(-p * remain);
+                consumption.setLocalDataFee(-p * remain);
                 System.out.println("本次本地流量花费 " + localDataUsage + "M, 花费" +
                 -p * remain + " 元");
             } else {
                 consumption.setFee(0);
+                consumption.setLocalDataFee(0);
                 System.out.println(FREE_NOTIF + remain + "M");
 
             }
@@ -144,9 +150,12 @@ public class ConsumptionDAO {
                 consumption.setFee(-3 * remain);
                 System.out.println("本次国内流量花费 " + domesticDataRemain + "M, 花费" +
                         -3 * remain + " 元");
+
+                consumption.setDomesticDataFee(-3 * remain);
             } else {
                 consumption.setFee(0);
                 System.out.println(FREE_NOTIF + remain + "M");
+                consumption.setDomesticDataFee(0);
             }
             HQLUtil.update(user);
             HQLUtil.add(consumption);
@@ -162,12 +171,13 @@ public class ConsumptionDAO {
      * @param yearMonthStr
      * @return
      */
-    public List<Consumption> listConsumptionByMonth(String yearMonthStr) {
+    public List<Consumption> listConsumptionByMonth(String yearMonthStr, String username) {
         try {
             String firstDayOfMonth = DateUtil.getFirstDayOfMonth(yearMonthStr);
             String lastDayOfMonth = DateUtil.getLastDayOfMonth(yearMonthStr);
             String oprdStr = "from Consumption where localDate between '" +
-                    firstDayOfMonth + "' and '" + lastDayOfMonth + "'";
+                    firstDayOfMonth + "' and '" + lastDayOfMonth + "' " +
+                    "and user_username = '" + username + "'"  ;
             return (List<Consumption>) HQLUtil.find(oprdStr);
         }catch (Exception ex) {
             ex.printStackTrace();
