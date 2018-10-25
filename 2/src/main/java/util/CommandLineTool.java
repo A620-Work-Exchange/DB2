@@ -5,6 +5,7 @@ import dao.BundleDAO;
 import dao.ConsumptionDAO;
 import dao.UserDAO;
 import domain.Bundle;
+import domain.User;
 import domain.enumeration.BundleType;
 
 import java.util.Scanner;
@@ -115,6 +116,18 @@ public class CommandLineTool {
                 username = cmdArr[2];
                 billDAO.addBill(dateToMonth, username);
                 break;
+
+            case "topup":
+                username = cmdArr[1];
+                double amount = Double.parseDouble(cmdArr[2]);
+                userDAO.topUp(username, amount);
+                break;
+
+            case "check":
+                username = cmdArr[1];
+                System.out.println("余额为" + userDAO.checkBalance(username) + "元");
+                break;
+
         }
     }
 

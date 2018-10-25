@@ -4,6 +4,7 @@ import domain.User;
 import util.HQLUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     public boolean addUser(String name, String password) {
@@ -24,6 +25,7 @@ public class UserDAO {
         String oprdStr = "from User where username = '" + username + "'";
         ArrayList<User> list = (ArrayList<User>) HQLUtil.find(oprdStr);
         if(list.size() == 0 || list == null) {
+            System.out.println("用户不存在");
            return new User();
         }
         return list.get(0);
@@ -41,4 +43,21 @@ public class UserDAO {
            return false;
        }
    }
+
+   public void topup(String username, double amount) {
+       User user = findUserByUserName(username);
+       if(user == null) {
+           System.out.println("用户不存在...");
+           return;
+       }
+       double balance = user.getBalance();
+       user.setBalance(balance + amount);
+       HQLUtil.update(user);
+   }
+
+   public double checkBalance(String username) {
+        return findUserByUserName(username).getBalance();
+   }
+
+
 }
