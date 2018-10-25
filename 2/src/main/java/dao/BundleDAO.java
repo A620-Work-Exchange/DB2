@@ -184,7 +184,7 @@ public class BundleDAO {
         return DateUtil.isEfficient(bundle.getEndDate(), LocalDate.now());
     }
 
-    private void updateBalance(User user, Bundle bundle) {
+    public void updateBalance(User user, Bundle bundle) {
         double balance = user.getBalance();
         double baseFee = .0;
         int callRemain = user.getCallRemain();
@@ -214,6 +214,25 @@ public class BundleDAO {
         balance -= baseFee;
         user.setBalance(balance);
         HQLUtil.update(user);
+    }
+
+    /**
+     * 每个月月初初始化用户信息
+     */
+    public void initUserInfoAtFirstDayOfMonth(LocalDate localDate) {
+        ArrayList<User> users = (ArrayList)HQLUtil.find("from User");
+        // System.out.println(users.size());
+        for(User user: users) {
+            List<Bundle> bundleList = user.getBundleList();
+            if (bundleList != null ) {
+                for(Bundle bundle: bundleList) {
+                    updateBalance(user, bundle);
+                }
+            }
+        }
+
+        HQLUtil.update(users);
+
     }
 
 

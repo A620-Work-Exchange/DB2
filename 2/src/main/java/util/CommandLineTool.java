@@ -24,6 +24,7 @@ public class CommandLineTool {
 
     public void init() {
         while (true) {
+            TaskUtil.initUserInfo();
             try {
                 System.out.println("请输入命令...");
                 Scanner input = new Scanner(System.in);

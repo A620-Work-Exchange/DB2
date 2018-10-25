@@ -1,12 +1,16 @@
 package dao;
 
+import domain.Bundle;
 import domain.User;
+import util.DateUtil;
 import util.HQLUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+
     public boolean addUser(String name, String password) {
         long start = System.currentTimeMillis();
         User user = new User(name, password);
@@ -60,4 +64,14 @@ public class UserDAO {
    }
 
 
+
+   private List<Bundle> efficientBundle(LocalDate date, User user) {
+        List<Bundle> list = new ArrayList<>();
+        for(Bundle bundle: user.getBundleList()) {
+            if(DateUtil.isEfficient(bundle.getEndDate(), date)) {
+                list.add(bundle);
+            }
+        }
+         return list;
+   }
 }
