@@ -18,7 +18,7 @@ public class BillDAO {
      */
     public boolean addBill(String date, String username) {
         try {
-            long start = 0;
+            long start = System.currentTimeMillis();
             List<Consumption> consumptionList = consumptionDAO.listConsumptionByMonth(date, username);
             int SMSUsage = 0;
             double callUsage =.0, localDataUsage = .0, domesticDataUsage = .0,

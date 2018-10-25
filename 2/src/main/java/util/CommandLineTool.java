@@ -110,6 +110,7 @@ public class CommandLineTool {
                         consumptionDAO.addDomesticDataUsage(username, usage);
                         break;
                 }
+                break;
 
                 //bill [dateToMonth] [username]
             case "bill":

@@ -61,10 +61,13 @@ public class BundleDAO {
             List<Bundle> bundleSet = user.getBundleList();
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
-            updateBalance(user, bundle);
+          //  此时只需将套餐加入用户套餐列表而不需做任何处理!
+            HQLUtil.update(user);
+
             long end = System.currentTimeMillis();
             System.out.println("您已成功订购套餐(次月生效)...");
             System.out.println("订购套餐(次月生效)花费时间" + (end - start) + "ms");
+
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -114,13 +117,15 @@ public class BundleDAO {
             List<Bundle> bundleSet = user.getBundleList();
             for (Bundle bundle: bundleSet) {
                 if(bundle.getId() == buddleId) {
-                    Bundle tmpBuddle = bundle;
-                    tmpBuddle.setEndDate(DateUtil.getLastDayOfCurrentMonth());
+                    Bundle bundle1 = bundle;
+                    bundle1.setEndDate(DateUtil.getLastDayOfCurrentMonth());
                     bundleSet.remove(bundle);
-                    bundleSet.add(tmpBuddle);
+                    bundleSet.add(bundle1);
                     break;
                 }
             }
+            user.setBundleList(bundleSet);
+            HQLUtil.update(user);
             long end = System.currentTimeMillis();
             System.out.println("取消套餐(次月生效)");
             System.out.println("取消套餐(次月生效)花费时间" + (end - start) + "ms");

@@ -27,7 +27,7 @@ public class ConsumptionDAO {
             consumption.setCallUsage(callUsage);
 
 
-            int remain = (int) Math.ceil(callTimeRemain - callUsage);
+            int remain = (int)(callTimeRemain - callUsage);
             user.setCallRemain(remain);
             double balance = user.getBalance();
             if (remain < 0 ) {
@@ -143,8 +143,8 @@ public class ConsumptionDAO {
             User user = userDAO.findUserByUserName(username);
             Consumption consumption = new Consumption();
             consumption.setLocalDate(DateUtil.getCurrentDate());
-            consumption.setLocalDataUsage(domesticDataUsage);
             consumption.setUser(user);
+            consumption.setDomesticDataUsage(domesticDataUsage);
 
             double domesticDataRemain = user.getDomesticDataRemain();
             double balance = user.getBalance();
