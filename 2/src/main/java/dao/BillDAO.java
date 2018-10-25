@@ -18,6 +18,7 @@ public class BillDAO {
      */
     public boolean addBill(String date, String username) {
         try {
+            long start = 0;
             List<Consumption> consumptionList = consumptionDAO.listConsumptionByMonth(date, username);
             int SMSUsage = 0;
             double callUsage =.0, localDataUsage = .0, domesticDataUsage = .0,
@@ -40,6 +41,8 @@ public class BillDAO {
                     domesticDataUsage, callFee, SMSFee, localDataFee, domesticDataFee,
                     sumFee);
             HQLUtil.add(bill);
+            long end = System.currentTimeMillis();
+
 
             System.out.println("           " + date + "账单");
             System.out.println("用户名: " + username);
@@ -56,6 +59,8 @@ public class BillDAO {
                     "  短信套餐: " + user.getSMSRemain() + "条 ");
             System.out.println("本地流量套餐: " + user.getLocalDataRemain() + "M " +
                     "国际流量套餐: " + user.getDomesticDataRemain() + "M");
+
+            System.out.println("本次查询订单耗时" + (end - start) + "ms");
             return true;
 
         }catch (Exception ex) {

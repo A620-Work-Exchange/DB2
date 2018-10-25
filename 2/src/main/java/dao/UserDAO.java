@@ -7,9 +7,12 @@ import java.util.ArrayList;
 
 public class UserDAO {
     public boolean addUser(String name, String password) {
+        long start = System.currentTimeMillis();
         User user = new User(name, password);
         try {
             HQLUtil.add(user);
+            long end = System.currentTimeMillis();
+            System.out.println("增加用户耗时 " + (end -start) + "ms");
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();

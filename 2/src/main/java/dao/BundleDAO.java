@@ -21,6 +21,7 @@ public class BundleDAO {
      */
     public boolean addBundleImmediately(BundleType bundleType, String username, int period) {
         try {
+            long start = System.currentTimeMillis();
             LocalDate beginDate = DateUtil.getCurrentDate();
             LocalDate endDate = DateUtil.getDateFewMonthLaterFromToday(period);
             Bundle bundle = new Bundle(bundleType, beginDate, period, endDate);
@@ -29,6 +30,9 @@ public class BundleDAO {
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
             updateBalance(user, bundle);
+            long end = System.currentTimeMillis();
+            System.out.println("您已成功订购套餐(立即生效)...");
+            System.out.println("订购套餐(立即生效)花费时间" + (end - start) + "ms");
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -45,6 +49,7 @@ public class BundleDAO {
      */
     public boolean addBundleNextMonth(BundleType bundleType, String username, int period) {
         try {
+            long start = System.currentTimeMillis();
             LocalDate beginDate = DateUtil.getFirstDayNextMonth();
             LocalDate endDate = DateUtil.getFewMonthLaterFromFirstDayNextMonth(period);
             Bundle bundle = new Bundle(bundleType, beginDate, period, endDate);
@@ -53,6 +58,9 @@ public class BundleDAO {
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
             updateBalance(user, bundle);
+            long end = System.currentTimeMillis();
+            System.out.println("您已成功订购套餐(次月生效)...");
+            System.out.println("订购套餐(次月生效)花费时间" + (end - start) + "ms");
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -68,6 +76,7 @@ public class BundleDAO {
      */
     public boolean removeBundleImmediately(String username, int buddleId) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             Set<Bundle> bundleSet = user.getBundleList();
             Bundle bundle = findBundleById(buddleId);
@@ -78,6 +87,9 @@ public class BundleDAO {
             }
             HQLUtil.update(user);
             HQLUtil.delete(bundle);
+            long end = System.currentTimeMillis();
+            System.out.println("取消套餐(立即)");
+            System.out.println("取消套餐(立即)花费时间" + (end - start) + "ms");
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -93,6 +105,7 @@ public class BundleDAO {
      */
     public boolean removeBundleUntilNextMonth(String username, int buddleId) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             Set<Bundle> bundleSet = user.getBundleList();
             for (Bundle bundle: bundleSet) {
@@ -104,6 +117,9 @@ public class BundleDAO {
                     break;
                 }
             }
+            long end = System.currentTimeMillis();
+            System.out.println("取消套餐(次月生效)");
+            System.out.println("取消套餐(次月生效)花费时间" + (end - start) + "ms");
             return true;
 
         }catch (Exception ex) {
@@ -130,8 +146,18 @@ public class BundleDAO {
 
     public List<Bundle> listBundleByUsername(String username) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             List<Bundle> list = new ArrayList<>(user.getBundleList());
+            if(list == null || list.size() == 0) {
+                System.out.println("无套餐");
+            }
+            for(Bundle bundle: list) {
+                System.out.println("套餐id: " + bundle.getId()+" 开始日期: " + bundle.getBeginDate()+" 套餐类型: " + bundle.getBundleType()
+                        + " 结束日期: " + bundle.getEndDate());
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("查询套餐时间" + (end - start) + "ms...");
             return list;
         } catch (Exception ex) {
             ex.printStackTrace();

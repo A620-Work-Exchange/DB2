@@ -24,9 +24,14 @@ public class CommandLineTool {
     public void init() {
         while (true) {
             try {
+                System.out.println("请输入命令...");
                 Scanner input = new Scanner(System.in);
-                cmd = input.nextLine();
+                cmd = input.nextLine().trim();
+                if(cmd.equals("quit") || cmd.equals("exit")){
+                    break;
+                }
                 analyzeCMD(cmd);
+                System.out.println("...");
             }catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -34,6 +39,7 @@ public class CommandLineTool {
     }
 
     private void analyzeCMD(String cmd) {
+
         String[] cmdArr = cmd.split(" ");
         if( cmdArr.length < 0 ){
             System.out.println("请输入命令...");

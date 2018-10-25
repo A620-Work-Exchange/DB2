@@ -18,6 +18,7 @@ public class ConsumptionDAO {
 
     public boolean addCallUsage(String username, double callUsage) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             Consumption consumption = new Consumption();
             consumption.setLocalDate(DateUtil.getCurrentDate());
@@ -45,6 +46,8 @@ public class ConsumptionDAO {
             }
             HQLUtil.add(consumption);
             HQLUtil.update(user);
+            long end = System.currentTimeMillis();
+            System.out.println("本次通话记录耗时" + (end - start) + "ms");
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
@@ -54,6 +57,7 @@ public class ConsumptionDAO {
 
     public boolean addSMSUsage(String username, int SMSAmount) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             int SMSRemain = user.getSMSRemain();
             int remain = SMSRemain - SMSAmount;
@@ -80,6 +84,8 @@ public class ConsumptionDAO {
             }
             HQLUtil.update(user);
             HQLUtil.add(consumption);
+            long end = System.currentTimeMillis();
+            System.out.println("本次短信记录耗时" + (end - start) + "ms");
             return true;
 
         }catch (Exception ex) {
@@ -90,6 +96,7 @@ public class ConsumptionDAO {
 
     public boolean addLocalDataUsage(String username, double localDataUsage) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             boolean isOrdered = bundleDAO.isOrdered(user, BundleType.Local); // 是否订购过套餐
             double p = isOrdered? 3: 2;
@@ -119,7 +126,8 @@ public class ConsumptionDAO {
                 System.out.println(FREE_NOTIF + remain + "M");
 
             }
-
+            long end = System.currentTimeMillis();
+            System.out.println("本次本地流量记录耗时" + (end - start) + "ms");
             HQLUtil.update(user);
             HQLUtil.add(consumption);
             return true;
@@ -131,6 +139,7 @@ public class ConsumptionDAO {
 
     public boolean addDomesticDataUsage(String username, double domesticDataUsage) {
         try {
+            long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             Consumption consumption = new Consumption();
             consumption.setLocalDate(DateUtil.getCurrentDate());
@@ -159,6 +168,8 @@ public class ConsumptionDAO {
             }
             HQLUtil.update(user);
             HQLUtil.add(consumption);
+            long end = System.currentTimeMillis();
+            System.out.println("本次国内流量记录耗时" + (end - start) + "ms");
             return true;
         }catch (Exception ex) {
             ex.printStackTrace();
