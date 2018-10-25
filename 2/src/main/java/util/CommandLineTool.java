@@ -68,7 +68,7 @@ public class CommandLineTool {
                 int period = Integer.parseInt(cmdArr[4]);
                 BundleType bundleType = transStrToBunndleType(cmdArr[2]);
 
-                if ( efficientDay.equals("imm") ) {
+                if (efficientDay.equals("imm") ) {
                     bundleDAO.addBundleImmediately(bundleType, username, period);
                     break;
                 } else if ( efficientDay.equals("next") ) {

@@ -1,10 +1,6 @@
 package util;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
 public class DateUtil {
@@ -12,10 +8,12 @@ public class DateUtil {
         return LocalDate.now();
     }
 
+    /**
+     *
+     * @return
+     */
     public static  LocalDate getFirstDayNextMonth() {
-        LocalDate today = LocalDate.now();
-
-        return today.with(TemporalAdjusters.firstDayOfNextMonth());
+        return getCurrentDate().with(TemporalAdjusters.firstDayOfNextMonth());
     }
 
     public static LocalDate getDateFewMonthLaterFromToday(int monthPeriod) {
@@ -31,14 +29,10 @@ public class DateUtil {
     }
 
     public static LocalDate getLastDayOfCurrentMonth() {
-        LocalDate today = LocalDate.now();
-        return today.with(TemporalAdjusters.lastDayOfMonth());
+        return getCurrentDate().with(TemporalAdjusters.lastDayOfMonth());
     }
 
-    public static LocalDateTime getCurrentDaytoSeconds() {
-        LocalDateTime now = LocalDateTime.now();
-        return now;
-    }
+
 
     public static String getFirstDayOfMonth(String yearMonthStr) {
         return yearMonthStr + "-01";
@@ -63,8 +57,8 @@ public class DateUtil {
 //        System.out.println(isEfficient(endDate, currentDate));
 //        System.out.println(getLastDayOfCurrentMonth());
 //        System.out.println("*** " + getCurrentDaytoSeconds());
-        System.out.println(getFirstDayOfMonth("2018-02"));
-        System.out.println(getLastDayOfMonth("2018-02"));
+//
+        System.out.println(getCurrentDate());
     }
 
 }

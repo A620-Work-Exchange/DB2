@@ -19,7 +19,7 @@ public class BundleDAOTest {
         bundleDAO.addBundleImmediately(BundleType.Call, "陈振宇", 2);
         bundleDAO.addBundleImmediately(BundleType.Domestic, "陈振宇", 3);
         User user = userDAO.findUserByUserName("陈振宇");
-        Set<Bundle> bundleSet = user.getBundleList();
+        List<Bundle> bundleSet = user.getBundleList();
         for(Bundle bundle: bundleSet) {
             System.out.println("id: " + bundle.getId()+" 开始日期: " + bundle.getBeginDate()+" 套餐类型: " + bundle.getBundleType()
             + " 结束日期: " + bundle.getEndDate());

@@ -5,6 +5,7 @@ import domain.User;
 import domain.enumeration.BundleType;
 import util.DateUtil;
 import util.HQLUtil;
+import util.TypeStringConverter;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -26,9 +27,12 @@ public class BundleDAO {
             LocalDate endDate = DateUtil.getDateFewMonthLaterFromToday(period);
             Bundle bundle = new Bundle(bundleType, beginDate, period, endDate);
             User user = userDAO.findUserByUserName(username);
-            Set<Bundle> bundleSet = user.getBundleList();
-            bundleSet.add(bundle);
-            user.setBundleList(bundleSet);
+
+            List<Bundle> bundleList = user.getBundleList();
+
+            bundleList.add(bundle);
+
+            user.setBundleList(bundleList);
             updateBalance(user, bundle);
             long end = System.currentTimeMillis();
             System.out.println("您已成功订购套餐(立即生效)...");
@@ -54,7 +58,7 @@ public class BundleDAO {
             LocalDate endDate = DateUtil.getFewMonthLaterFromFirstDayNextMonth(period);
             Bundle bundle = new Bundle(bundleType, beginDate, period, endDate);
             User user = userDAO.findUserByUserName(username);
-            Set<Bundle> bundleSet = new HashSet<>();
+            List<Bundle> bundleSet = user.getBundleList();
             bundleSet.add(bundle);
             user.setBundleList(bundleSet);
             updateBalance(user, bundle);
@@ -78,7 +82,7 @@ public class BundleDAO {
         try {
             long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
-            Set<Bundle> bundleSet = user.getBundleList();
+            List<Bundle> bundleSet = user.getBundleList();
             Bundle bundle = findBundleById(buddleId);
             bundleSet.remove(bundle);
             user.setBundleList(bundleSet);
@@ -107,7 +111,7 @@ public class BundleDAO {
         try {
             long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
-            Set<Bundle> bundleSet = user.getBundleList();
+            List<Bundle> bundleSet = user.getBundleList();
             for (Bundle bundle: bundleSet) {
                 if(bundle.getId() == buddleId) {
                     Bundle tmpBuddle = bundle;
@@ -153,7 +157,8 @@ public class BundleDAO {
                 System.out.println("无套餐");
             }
             for(Bundle bundle: list) {
-                System.out.println("套餐id: " + bundle.getId()+" 开始日期: " + bundle.getBeginDate()+" 套餐类型: " + bundle.getBundleType()
+                System.out.println("套餐id: " + bundle.getId()+" 开始日期: " + bundle.getBeginDate()+" 套餐类型: " +
+                        TypeStringConverter.convertTypeToString(bundle.getBundleType())
                         + " 结束日期: " + bundle.getEndDate());
             }
             long end = System.currentTimeMillis();
@@ -166,7 +171,7 @@ public class BundleDAO {
     }
 
     public boolean isOrdered(User user, BundleType bundleType) {
-        Set<Bundle> bundleSet = user.getBundleList();
+        List<Bundle> bundleSet = user.getBundleList();
         for(Bundle bundle: bundleSet) {
             if(isEfficient(bundle) && bundle.getBundleType().equals(bundleType)) {
                 return true;

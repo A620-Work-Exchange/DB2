@@ -2,7 +2,9 @@ package domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,7 +30,7 @@ public class User implements Serializable {
      * 订购的套餐
      */
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Bundle> bundleList = new HashSet<>();
+    private List<Bundle> bundleList = new ArrayList<>();
 
     /**
      * 通话剩余时间
@@ -60,14 +62,14 @@ public class User implements Serializable {
         this.balance = 0;
     }
 
-    public User(String username, String password, Set<Bundle> bundleList) {
+    public User(String username, String password, List<Bundle> bundleList) {
         this.username = username;
         this.password = password;
         this.bundleList = bundleList;
     }
 
     public User(String username, String password,
-                double balance, Set<Bundle> bundleList) {
+                double balance, List<Bundle> bundleList) {
         this.username = username;
         this.password = password;
         this.balance = balance;
@@ -75,7 +77,7 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, double balance,
-                Set<Bundle> bundleList, int callRemain, int SMSRemain,
+                List<Bundle> bundleList, int callRemain, int SMSRemain,
                 double localDataRemain, double domesticDataRemain) {
         this.username = username;
         this.password = password;
@@ -113,11 +115,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Set<Bundle> getBundleList() {
+    public List<Bundle> getBundleList() {
         return bundleList;
     }
 
-    public void setBundleList(Set<Bundle> bundleList) {
+    public void setBundleList(List<Bundle> bundleList) {
         this.bundleList = bundleList;
     }
 
