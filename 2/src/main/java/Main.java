@@ -1,12 +1,12 @@
-import dao.BillDAO;
-import dao.UserDAO;
-import domain.User;
+import util.CommandLineTool;
 
+/**
+ * 启动命令行工具
+ */
 public class Main {
-    private static UserDAO userDAO = new UserDAO();
     public static void main(String[] args) {
-
-        userDAO.addUser("6++", "123456");
+        CommandLineTool commandLineTool = new CommandLineTool();
+        commandLineTool.init();
 
     }
 
