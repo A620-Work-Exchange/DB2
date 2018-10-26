@@ -69,6 +69,8 @@ jdbc直接从txt导入到数据库表，对应语句
 
 在这个例子中，age列集合显然不会超过200与整个order表无法相比，此时磁盘开销巨大，需要更多的索引，而这些具体的开销高昂以至于MySQL直接全表查询
 
+**所以不建索引**
+
 ### 问题2:在 orders 表中找出所有姓王的人的order列表。
 	select * from orders where name like '王%';
 ![](img/2_1.png)
@@ -86,6 +88,7 @@ jdbc直接从txt导入到数据库表，对应语句
 ![](img/2_4.png)
 总: 3477290确实很巨大，考量表的其他列，名字的区分性确实让本身建立索引查询占优
 
+**所以建索引**
 ### 问题3:统计 orders 表中所有男性的人的数量。
 	select count(*) from orders where sex = '男';
 ![](img/3_1.png)
@@ -104,6 +107,8 @@ jdbc直接从txt导入到数据库表，对应语句
 	explain select count(*) from orders where sex = '男';
 ![](img/3_4.png)	
 **此时是索引查询**
+
+**所以建索引**
 ### 问题4:在 orders 表中计算女性，姓张，年龄大于50，且消费小于100的人数。
 	select count(*) from orders where sex = '女' and name like '张%' and age > 50 and amount < 100;
 ![](img/4_1.png)
@@ -137,6 +142,7 @@ Stack Overflow对于复合列索引有一个类比电话本的解释我很喜欢
 
 **此时心中应该规定优先级 exact > range > like**
 
+**所以建索引**
 
 ### 问题5:统计 orders 表中姓名为三个字的人数。
 	select count(*) from orders where name like '___';
@@ -150,7 +156,9 @@ Stack Overflow对于复合列索引有一个类比电话本的解释我很喜欢
 	
 	explain select count(*) from orders where name like '___';
 ![](img/5_4.png)
-其实还是用了的，然而这个索引之所以没有提升也不能理解，**索引本身的数量**决定了性能，而对于name列来说这本身就是一个巨大的挑战，MySQL拿出资源来维护索引本身也是**高昂的开销**
+其实还是用了的，然而这个索引之所以没有提升也能理解，**索引本身的数量**决定了性能，而对于name列来说这本身就是一个巨大的挑战，MySQL拿出资源来维护索引本身也是**高昂的开销**
+
+**所以建索引**
 
 ### 问题6:在 products 表中查找库存大于150的product列表。	select * from products where nums>150;
 	
@@ -164,4 +172,6 @@ Stack Overflow对于复合列索引有一个类比电话本的解释我很喜欢
 其实你**建了也没用**
 
 还是那句话，索引本身是有代价的，MySQL会在资源和查询中作出权衡，具体视数据而定，这道题不应该建
+
+**所以不建索引**
 	
