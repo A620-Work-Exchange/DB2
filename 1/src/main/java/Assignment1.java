@@ -252,8 +252,8 @@ public class Assignment1 {
     public static void main(String[] args) {
         Assignment1 assignment1 = new Assignment1();
         assignment1.init();
-//        assignment1.loadOrdersData);
-//        assignment1.loadProductsData();
+      //  assignment1.loadOrdersData();
+          assignment1.loadProductsData();
 //        assignment1.solution1();
 //        assignment1.solution2();
 //        assignment1.solution3();

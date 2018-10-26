@@ -1,0 +1,8 @@
+# 10.22
+Init the project, felt sad for the util I used in SE2
+
+# 10.23
+update mysql.user set authentication_string=password('#Pypy2331212hjkl') where user='root';
+
+# 10.24
+Rename the class Usage to Consumption, avoid the usage defined in mysql
