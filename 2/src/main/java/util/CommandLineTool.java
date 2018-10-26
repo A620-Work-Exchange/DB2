@@ -14,8 +14,9 @@ import java.util.Scanner;
  * 封装的命令行小玩具
  */
 public class CommandLineTool {
-    private String cmd;
-
+    /**
+     * 注入四个数据服务
+     */
     private UserDAO userDAO = new UserDAO();
     private ConsumptionDAO consumptionDAO = new ConsumptionDAO();
     private BundleDAO bundleDAO = new BundleDAO();
@@ -28,8 +29,8 @@ public class CommandLineTool {
             try {
                 System.out.println("请输入命令...");
                 Scanner input = new Scanner(System.in);
-                cmd = input.nextLine().trim();
-                if(cmd.equals("quit") || cmd.equals("exit")){
+                String cmd = input.nextLine().trim();
+                if( cmd.equals("quit") || cmd.equals("exit")){
                     break;
                 }
                 analyzeCMD(cmd);
@@ -43,10 +44,6 @@ public class CommandLineTool {
     private void analyzeCMD(String cmd) {
 
         String[] cmdArr = cmd.split(" ");
-        if( cmdArr.length < 0 ){
-            System.out.println("请输入命令...");
-
-        }
         String cmdBegin = cmdArr[0];
         String username;
         switch (cmdBegin) {
@@ -68,7 +65,7 @@ public class CommandLineTool {
                 String efficientDay = cmdArr[1];
                 username = cmdArr[3];
                 int period = Integer.parseInt(cmdArr[4]);
-                BundleType bundleType = transStrToBunndleType(cmdArr[2]);
+                BundleType bundleType = transStrToBundleType(cmdArr[2]);
 
                 if (efficientDay.equals("imm") ) {
                     bundleDAO.addBundleImmediately(bundleType, username, period);
@@ -116,7 +113,7 @@ public class CommandLineTool {
             case "bill":
                 String dateToMonth = cmdArr[1];
                 username = cmdArr[2];
-                billDAO.addBill(dateToMonth, username);
+                billDAO.addBill(dateToMonth, username, false);
                 break;
 
             case "topup":
@@ -130,10 +127,16 @@ public class CommandLineTool {
                 System.out.println("余额为" + userDAO.checkBalance(username) + "元");
                 break;
 
+            case "export":
+                String date = cmdArr[1];
+                username = cmdArr[2];
+                billDAO.addBill(date, username, true);
+                break;
+
         }
     }
 
-    private BundleType transStrToBunndleType(String str) {
+    private BundleType transStrToBundleType(String str) {
 
         BundleType bundleType = BundleType.Base;
         switch (str) {

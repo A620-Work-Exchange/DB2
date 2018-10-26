@@ -11,6 +11,6 @@ public class BillDAOTest {
 
     @Test
     public void addBill() {
-        billDAO.addBill("2018-10", "陈振宇");
+        billDAO.addBill("2018-10", "陈振宇", false);
     }
 }
