@@ -81,7 +81,10 @@ jdbc直接从txt导入到数据库表，对应语句
 继续查询
 ![](img/2_3.png)
 **效率大大增加**
+	
+	explain select * from orders where name like '王%';
 
+![](img/2_5.png)
 可以理解，因为名字集合本身很大，统计一下
 		
 	select count(distinct(name)) from orders;
@@ -138,6 +141,7 @@ Stack Overflow对于复合列索引有一个类比电话本的解释我很喜欢
 
 **忽略那些令人尴尬的warning，对multi-index都有数，MySQL还是选择了我第一把建的mul_index，这是有道理的**
 
+	explain select count(*) from orders where sex = '女' and name like '张%' and age > 50 and amount < 100;
 ![](img/4_5.png)
 
 **此时心中应该规定优先级 exact > range > like**
@@ -171,7 +175,9 @@ Stack Overflow对于复合列索引有一个类比电话本的解释我很喜欢
 
 其实你**建了也没用**
 
-还是那句话，索引本身是有代价的，MySQL会在资源和查询中作出权衡，具体视数据而定，这道题不应该建
+	explain select * from products where nums>150;
 
+还是那句话，索引本身是有代价的，MySQL会在资源和查询中作出权衡，具体视数据而定，这道题不应该建
+![](img/6_5.png)
 **所以不建索引**
 	

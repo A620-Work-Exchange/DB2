@@ -6,7 +6,7 @@ import java.sql.Statement;
 public class Assignment1 {
     Connection connection;
     private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final static String URL = "jdbc:mysql://localhost:3306/ERP?useUnicode=" +
+    private final static String URL = "jdbc:mysql://localhost:3306/DB2?useUnicode=" +
             "true&characterEncoding=utf-8&useSSL=false";
     private final static String USER = "root";
     private final static String PW = "1212hjkl";
@@ -252,13 +252,8 @@ public class Assignment1 {
     public static void main(String[] args) {
         Assignment1 assignment1 = new Assignment1();
         assignment1.init();
-      //  assignment1.loadOrdersData();
-          assignment1.loadProductsData();
-//        assignment1.solution1();
-//        assignment1.solution2();
-//        assignment1.solution3();
-//        assignment1.solution6();
-        assignment1.solution8();
+        assignment1.loadProductsData();
+//        assignment1.solution8();
 
     }
 
