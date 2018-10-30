@@ -1,6 +1,7 @@
 package util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.TemporalAdjusters;
 
@@ -55,6 +56,10 @@ public class DateUtil {
         return period.getDays();
     }
 
+    public static LocalDate getYesterDay() {
+        return getCurrentDate().minusDays(1);
+    }
+
 
     public static void main(String[] args) {
 //        System.out.println(isEfficient(getFirstDayNextMonth(), getCurrentDate()));
@@ -64,7 +69,7 @@ public class DateUtil {
 //        System.out.println(getLastDayOfCurrentMonth());
 //        System.out.println("*** " + getCurrentDaytoSeconds());
 //
-        System.out.println(getDaysBetweenMonths());
+        System.out.println(getYesterDay());
     }
 
 }

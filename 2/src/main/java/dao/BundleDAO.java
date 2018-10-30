@@ -86,14 +86,14 @@ public class BundleDAO {
             long start = System.currentTimeMillis();
             User user = userDAO.findUserByUserName(username);
             List<Bundle> bundleSet = user.getBundleList();
-            Bundle bundle = findBundleById(buddleId);
-            bundleSet.remove(bundle);
-            user.setBundleList(bundleSet);
-            if(bundleSet.size() == 0) {
-                System.out.println("您已退订所有套餐...");
+            for(Bundle b: bundleSet) {
+                if(b.getId() == buddleId) {
+                    b.setEndDate(DateUtil.getYesterDay());
+                }
             }
+            user.setBundleList(bundleSet);
+
             HQLUtil.update(user);
-            HQLUtil.delete(bundle);
             long end = System.currentTimeMillis();
             System.out.println("取消套餐(立即)");
             System.out.println("取消套餐(立即)花费时间" + (end - start) + "ms");
